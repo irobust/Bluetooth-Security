@@ -1,17 +1,4 @@
 # Hands-on Lab: Bluetooth Security Testing with BlueToolkit + Caeruleus + nRF Connect
-## หลักสูตร 1 วัน — คู่มือผู้สอนและผู้เข้าอบรม
-
-> **ขอบเขตและความปลอดภัย**
->
-> คู่มือนี้ออกแบบสำหรับการทดสอบอุปกรณ์ที่ผู้เข้าอบรมเป็นเจ้าของ หรือได้รับอนุญาตเป็นลายลักษณ์อักษรเท่านั้น ใช้พื้นที่ทดสอบที่ควบคุมได้ ห้ามทดสอบรถยนต์ อุปกรณ์สาธารณะ อุปกรณ์ของบุคคลอื่น หรืออุปกรณ์ที่กำลังใช้งานจริงโดยไม่ได้รับอนุญาต
->
-> Lab นี้เน้นการสำรวจ (reconnaissance) การตรวจสอบค่าความปลอดภัย การรวบรวมหลักฐาน และการจัดทำรายงาน ไม่ให้ขั้นตอนโจมตี DoS, RCE, การดักข้อมูล, MITM, การข้ามการยืนยันตัวตน หรือการรบกวนการเชื่อมต่อกับอุปกรณ์จริง
->
-> **ชื่อเครื่องมือ:** เอกสารสาธารณะที่ตรงกับงานนี้คือ **BlueToolkit** (ไม่ใช่ยืนยันว่า “BluetoothKit” ที่ผู้ใช้หมายถึงเป็นโครงการเดียวกัน) — https://github.com/sgxgsx/BlueToolkit  
-> ตรวจสอบ README และ Wiki ล่าสุดก่อนเริ่ม เพราะความสามารถ คำสั่ง และความต้องการฮาร์ดแวร์อาจเปลี่ยนแปลงได้
-
----
-
 ## 1. วัตถุประสงค์การเรียนรู้
 
 เมื่อจบ Lab ผู้เรียนจะสามารถ:
@@ -24,28 +11,10 @@
 6. เข้าใจบทบาทของ nRF52840 ที่ทำงานเป็น BLE peripheral เทียบกับการแฟลช firmware ให้เป็น packet sniffer
 7. อ่านผลลัพธ์และแยกข้อเท็จจริงออกจากข้อสันนิษฐาน
 8. จัดทำหลักฐานและรายงาน finding พร้อมระดับความเสี่ยงและแนวทางแก้ไข
+   
+## 2. ข้อกำหนดก่อนเข้าอบรม
 
-## 2. กำหนดการอบรม 1 วัน (ฉบับปรับปรุง)
-
-| เวลา | หัวข้อ | รูปแบบ |
-|---|---|---|
-| 09:00–09:35 | Bluetooth Classic, BLE, GATT, pairing และ threat model | บรรยาย |
-| 09:35–10:20 | Lab 0: Setup BlueZ, BlueToolkit และ Caeruleus | Hands-on |
-| 10:20–10:35 | พัก | |
-| 10:35–11:15 | Lab 1: BLE Discovery และ Target Inventory | Hands-on |
-| 11:15–12:00 | Lab 2: BlueToolkit Reconnaissance | Hands-on |
-| 12:00–13:00 | พักกลางวัน | |
-| 13:00–13:35 | Lab 3: Caeruleus GATT Enumeration และ Read | Hands-on |
-| 13:35–14:10 | Lab 4: Authentication และ Encryption Assessment | Hands-on |
-| 14:10–14:25 | พัก | |
-| 14:25–15:10 | Lab 5: เปรียบเทียบ Insecure / Secure ESP32 | Hands-on |
-| 15:10–15:50 | Lab 6: nRF Connect for Mobile + nRF52840 | Hands-on |
-| 15:50–16:30 | Lab 7: Evidence, JSON และ Reporting | Hands-on |
-| 16:30–17:00 | สรุปผลและนำเสนอ Finding | Workshop |
-
-## 3. ข้อกำหนดก่อนเข้าอบรม
-
-### ฮาร์ดแวร์
+### Hardware
 
 - Laptop ที่รัน Ubuntu/Debian Linux ได้จริงหรือ VM ที่ส่งผ่าน Bluetooth USB adapter ได้
 - Bluetooth USB adapter ที่รองรับ BlueZ และมองเห็นได้จาก Linux
@@ -54,7 +23,7 @@
 - (ตัวเลือก) nRF52840 DK/Dongle เพิ่มอีกหนึ่งตัวสำหรับ nRF Sniffer; อุปกรณ์ที่ถูกแฟลชเป็น sniffer จะไม่ทำหน้าที่เป็น BLE peripheral ในเวลาเดียวกัน
 - แนะนำให้ใช้ target สำหรับ Lab ที่ไม่มีข้อมูลส่วนบุคคลและไม่มีผลกระทบต่อบริการจริง
 
-### ซอฟต์แวร์
+### Software
 
 - Ubuntu/Debian รุ่นที่ BlueToolkit ระบุว่ารองรับ
 - BlueZ utilities เช่น `bluetoothctl`, `btmgmt`, `bluetoothd`
@@ -71,7 +40,7 @@
 
 ---
 
-# Lab 0 — เตรียมสภาพแวดล้อม
+# Lab 0 — Setup Environment
 
 ## เป้าหมาย
 
